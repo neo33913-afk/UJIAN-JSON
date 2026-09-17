@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Users</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F5F6FA;
+    --surface: #FFFFFF;
+    --ink: #1B2333;
+    --ink-soft: #667085;
+    --ink-faint: #98A2B3;
+    --primary: #1D3557;
+    --primary-soft: #2E4A7A;
+    --primary-wash: #E9EEF6;
+    --accent: #D89A3E;
+    --accent-wash: #FBF1DF;
+    --success: #2F9E68;
+    --success-wash: #E5F5EC;
+    --danger: #D6484B;
+    --danger-wash: #FBEAEA;
+    --border: #E4E7EC;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --shadow-sm: 0 1px 2px rgba(16,24,40,.06);
+    --shadow-md: 0 8px 24px rgba(16,24,40,.10);
+    --font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html, body{
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font);
+  }
+
+  body{
+    padding: 32px 24px 64px;
+  }
+
+  :focus-visible{
+    outline: 2px solid var(--primary-soft);
+    outline-offset: 2px;
+  }
+
+  .wrap{
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .page-header{
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .page-header h1{
+    margin: 0 0 4px;
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  .page-header p{
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 14.5px;
+  }
+
+  .stats{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .stat-chip{
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 8px 14px;
+    display: flex;
+    flex-direction: column;
+    min-width: 84px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .stat-chip .num{
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1.2;
+  }
+
+  .stat-chip .label{
+    font-size: 11.5px;
+    color: var(--ink-soft);
+  }
+
+  /* Toolbar */
+  .toolbar{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .search-box{
+    position: relative;
+    flex: 1 1 260px;
+    min-width: 200px;
+  }
+
+  .search-box svg{
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--ink-faint);
+  }
+
+  .search-box input{
+    width: 100%;
+    padding: 10px 12px 10px 36px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    font-family: var(--font);
+    font-size: 14px;
+    color: var(--ink);
+  }
+
+  .search-box input::placeholder{ color: var(--ink-faint); }
+
+  select.filter{
+    padding: 10px 32px 10px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    font-family: var(--font);
+    font-size: 14px;
+    color: var(--ink);
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23667085' stroke-width='2'><path d='M6 9l6 6 6-6'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+  }
+
+  .spacer{ flex: 1; }
+
+  .btn{
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 10px 16px;
+    font-family: var(--font);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .15s ease, box-shadow .15s ease, transform .05s ease;
+    white-space: nowrap;
+  }
+
+  .btn:active{ transform: translateY(1px); }
+
+  .btn-primary{ background: var(--primary); color: #fff; }
+  .btn-primary:hover{ background: var(--primary-soft); }
+
+  .btn-ghost{ background: var(--surface); color: var(--ink); border: 1px solid var(--border); }
+  .btn-ghost:hover{ background: #F0F1F5; }
+
+  .btn-icon{
+    padding: 8px;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+    display: inline-flex;
+    color: var(--ink-soft);
+  }
+
+  .btn-icon:hover{ background: var(--primary-wash); color: var(--primary); }
+  .btn-icon.danger:hover{ background: var(--danger-wash); color: var(--danger); }
+
+  /* Table card */
+  .card{
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+
+  .table-scroll{
+    overflow-x: auto;
+  }
+
+  table{
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    min-width: 760px;
+  }
+
+  thead th{
+    text-align: left;
+    padding: 12px 16px;
+    background: var(--primary-wash);
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 12.5px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+
+  th.sortable{
+    cursor: pointer;
+    user-select: none;
+  }
+
+  th.sortable .th-inner{
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  th.sortable svg{
+    opacity: .45;
+    transition: opacity .15s ease, transform .15s ease;
+  }
+
+  th.sortable.active svg{ opacity: 1; }
+  th.sortable.desc svg{ transform: rotate(180deg); }
+
+  tbody tr{
+    border-bottom: 1px solid var(--border);
+    transition: background .1s ease;
+  }
+
+  tbody tr:last-child{ border-bottom: none; }
+  tbody tr:hover{ background: #FAFBFD; }
+
+  td{
+    padding: 11px 16px;
+    vertical-align: middle;
+    color: var(--ink);
+  }
+
+  .cell-user{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .avatar{
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .name-block .name{ font-weight: 600; }
+  .name-block .nisn{ font-size: 12px; color: var(--ink-soft); }
+
+  .badge{
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .badge-m{ background: var(--primary-wash); color: var(--primary); }
+  .badge-f{ background: #FBEAF1; color: #B4306B; }
+  .badge-other{ background: #F0F1F5; color: var(--ink-soft); }
+
+  .addr-cell{
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .actions-cell{
+    display: flex;
+    gap: 4px;
+    justify-content: flex-end;
+  }
+
+  .empty-state, .loading-state, .error-state{
+    padding: 56px 24px;
+    text-align: center;
+    color: var(--ink-soft);
+  }
+
+  .empty-state svg, .error-state svg{ color: var(--ink-faint); margin-bottom: 10px; }
+  .empty-state .title, .error-state .title{ font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+
+  .skeleton-row td{ padding: 14px 16px; }
+  .skeleton{
+    height: 14px;
+    border-radius: 6px;
+    background: linear-gradient(90deg, #EEF0F3 25%, #F6F7F9 37%, #EEF0F3 63%);
+    background-size: 400% 100%;
+    animation: shimmer 1.4s ease infinite;
+  }
+
+  @keyframes shimmer{
+    0%{ background-position: 100% 50%; }
+    100%{ background-position: 0 50%; }
+  }
+
+  .table-footer{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--ink-soft);
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .pagination{
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .page-btn{
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--ink);
+    width: 30px;
+    height: 30px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .page-btn:hover:not(:disabled){ background: #F0F1F5; }
+  .page-btn:disabled{ opacity: .4; cursor: not-allowed; }
+  .page-btn.active{ background: var(--primary); color: #fff; border-color: var(--primary); }
+
+  /* Modal */
+  .overlay{
+    position: fixed;
+    inset: 0;
+    background: rgba(16,24,40,.45);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 100;
+  }
+
+  .overlay.show{ display: flex; }
+
+  .modal{
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    width: 100%;
+    max-width: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-md);
+    animation: pop .16s ease;
+  }
+
+  @keyframes pop{
+    from{ opacity: 0; transform: scale(.97) translateY(4px); }
+    to{ opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .modal-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .modal-header h3{ margin: 0; font-size: 17px; font-weight: 800; }
+
+  .modal-body{ padding: 20px; }
+
+  .modal-footer{
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .form-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .field{ display: flex; flex-direction: column; gap: 5px; }
+  .field.full{ grid-column: 1 / -1; }
+
+  .field label{ font-size: 12.5px; font-weight: 700; color: var(--ink-soft); }
+
+  .field input, .field select, .field textarea{
+    padding: 9px 11px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    font-family: var(--font);
+    font-size: 14px;
+    color: var(--ink);
+    width: 100%;
+  }
+
+  .field textarea{ resize: vertical; min-height: 60px; }
+
+  .field input:invalid:not(:placeholder-shown){ border-color: var(--danger); }
+
+  .field .hint{ font-size: 11.5px; color: var(--danger); min-height: 14px; }
+
+  .gender-pick{ display: flex; gap: 8px; }
+
+  .gender-pick label{
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 9px 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+
+  .gender-pick input{ display: none; }
+
+  .gender-pick input:checked + span{ color: inherit; }
+
+  .gender-pick label:has(input:checked){
+    background: var(--primary-wash);
+    border-color: var(--primary-soft);
+    color: var(--primary);
+  }
+
+  /* Confirm dialog */
+  .confirm-modal{ max-width: 380px; text-align: center; padding: 28px 24px 24px; }
+  .confirm-modal .icon-circle{
+    width: 48px; height: 48px; border-radius: 50%;
+    background: var(--danger-wash); color: var(--danger);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 14px;
+  }
+  .confirm-modal h3{ margin: 0 0 6px; font-size: 16px; }
+  .confirm-modal p{ margin: 0 0 20px; font-size: 13.5px; color: var(--ink-soft); }
+  .confirm-modal .row{ display: flex; gap: 8px; }
+  .confirm-modal .row .btn{ flex: 1; justify-content: center; }
+  .btn-danger{ background: var(--danger); color: #fff; }
+  .btn-danger:hover{ background: #C1393C; }
+
+  /* Toasts */
+  .toast-stack{
+    position: fixed;
+    top: 18px;
+    right: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 200;
+  }
+
+  .toast{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--ink);
+    color: #fff;
+    padding: 11px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 13.5px;
+    box-shadow: var(--shadow-md);
+    animation: toast-in .18s ease;
+    max-width: 320px;
+  }
+
+  .toast.success{ background: #1E5A3E; }
+  .toast.error{ background: #7A2426; }
+
+  @keyframes toast-in{
+    from{ opacity: 0; transform: translateX(12px); }
+    to{ opacity: 1; transform: translateX(0); }
+  }
+
+  /* Responsive: card layout for the table */
+  @media (max-width: 760px){
+    body{ padding: 20px 14px 48px; }
+
+    table{ min-width: 0; }
+    thead{ display: none; }
+
+    tbody tr{
+      display: block;
+      padding: 12px 14px;
+      border-bottom: 8px solid var(--bg);
+    }
+
+    td{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 7px 0;
+      border: none;
+      text-align: right;
+    }
+
+    td::before{
+      content: attr(data-label);
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--ink-soft);
+      text-align: left;
+    }
+
+    td.cell-user-td::before{ display: none; }
+    .cell-user{ width: 100%; }
+    .addr-cell{ max-width: 60%; text-align: right; white-space: normal; }
+    .actions-cell{ width: 100%; justify-content: flex-end; padding-top: 4px; }
+
+    .form-grid{ grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <div class="page-header">
+    <div>
+      <h1>Data Users</h1>
+      <p>Kelola data peserta didik &mdash; tambah, ubah, dan hapus catatan.</p>
+    </div>
+    <div class="stats" id="stats"></div>
+  </div>
+
+  <div class="toolbar">
+    <div class="search-box">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input type="text" id="searchInput" placeholder="Cari nama, NISN, atau email...">
+    </div>
+    <select class="filter" id="genderFilter">
+      <option value="">Semua gender</option>
+      <option value="Laki-laki">Laki-laki</option>
+      <option value="Perempuan">Perempuan</option>
+    </select>
+    <div class="spacer"></div>
+    <button class="btn btn-ghost" id="exportBtn" type="button">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v3a1 1 0 001 1h14a1 1 0 001-1v-3"/></svg>
+      Ekspor CSV
+    </button>
+    <button class="btn btn-primary" id="addBtn" type="button">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
+      Tambah Data
+    </button>
+  </div>
+
+  <div class="card">
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th class="sortable" data-sort="name"><span class="th-inner">NAMA <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></span></th>
+            <th class="sortable" data-sort="nisn"><span class="th-inner">NISN <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></span></th>
+            <th>TTL</th>
+            <th class="sortable" data-sort="gender"><span class="th-inner">GENDER <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></span></th>
+            <th>EMAIL</th>
+            <th>ALAMAT</th>
+            <th style="text-align:right">AKSI</th>
+          </tr>
+        </thead>
+        <tbody id="hasil">
+          <tr class="skeleton-row"><td colspan="8"><div class="skeleton" style="width:100%"></div></td></tr>
+          <tr class="skeleton-row"><td colspan="8"><div class="skeleton" style="width:100%"></div></td></tr>
+          <tr class="skeleton-row"><td colspan="8"><div class="skeleton" style="width:100%"></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-footer" id="tableFooter" style="display:none">
+      <span id="footerInfo"></span>
+      <div class="pagination" id="pagination"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Form Modal (Tambah / Edit) -->
+<div class="overlay" id="formOverlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="formTitle">
+    <form id="dataForm">
+      <div class="modal-header">
+        <h3 id="formTitle">Tambah Data</h3>
+        <button type="button" class="btn-icon" id="closeFormBtn" aria-label="Tutup">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-grid">
+          <div class="field full">
+            <label for="f_name">Nama lengkap</label>
+            <input id="f_name" name="name" type="text" required placeholder="cth. Siti Aminah">
+          </div>
+          <div class="field">
+            <label for="f_nisn">NISN</label>
+            <input id="f_nisn" name="nisn" type="text" inputmode="numeric" maxlength="10" required placeholder="10 digit angka">
+            <span class="hint" id="hint_nisn"></span>
+          </div>
+          <div class="field">
+            <label for="f_email">Email</label>
+            <input id="f_email" name="email" type="email" required placeholder="nama@contoh.com">
+          </div>
+          <div class="field">
+            <label for="f_place">Tempat lahir</label>
+            <input id="f_place" name="place" type="text" required placeholder="cth. Sumenep">
+          </div>
+          <div class="field">
+            <label for="f_date">Tanggal lahir</label>
+            <input id="f_date" name="date" type="date">
+          </div>
+          <div class="field full">
+            <label>Gender</label>
+            <div class="gender-pick">
+              <label><input type="radio" name="gender" value="Laki-laki"><span>Laki-laki</span></label>
+              <label><input type="radio" name="gender" value="Perempuan"><span>Perempuan</span></label>
+            </div>
+          </div>
+          <div class="field full">
+            <label for="f_address">Alamat</label>
+            <textarea id="f_address" name="address" required placeholder="Alamat lengkap"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" id="cancelFormBtn">Batal</button>
+        <button type="submit" class="btn btn-primary" id="submitFormBtn">Simpan</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Confirm Delete Modal -->
+<div class="overlay" id="confirmOverlay">
+  <div class="modal confirm-modal" role="dialog" aria-modal="true">
+    <div class="icon-circle">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0l-1 14a2 2 0 01-2 2H7a2 2 0 01-2-2L4 6h16z"/></svg>
+    </div>
+    <h3>Hapus data ini?</h3>
+    <p id="confirmText">Tindakan ini tidak dapat dibatalkan.</p>
+    <div class="row">
+      <button class="btn btn-ghost" id="cancelDeleteBtn" type="button">Batal</button>
+      <button class="btn btn-danger" id="confirmDeleteBtn" type="button">Ya, Hapus</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-stack" id="toastStack"></div>
+
+<script>
+// ------------------------------------------------------------------
+// State
+// ------------------------------------------------------------------
+let allData = [];
+let loadError = false;
+let searchTerm = '';
+let genderFilter = '';
+let sortKey = null;
+let sortDir = 1;
+let currentPage = 1;
+const PAGE_SIZE = 8;
+let editingId = null;
+let deletingId = null;
+
+const el = (id) => document.getElementById(id);
+
+// ------------------------------------------------------------------
+// Helpers
+// ------------------------------------------------------------------
+function normalizeGender(g){
+  if(!g) return '';
+  const v = String(g).trim().toLowerCase();
+  if(['l','laki-laki','laki laki','pria','male','m'].includes(v)) return 'Laki-laki';
+  if(['p','perempuan','wanita','female','f'].includes(v)) return 'Perempuan';
+  return g;
+}
+
+function initials(name){
+  if(!name) return '?';
+  const parts = name.trim().split(/\s+/);
+  return ((parts[0]?.[0] || '') + (parts[1]?.[0] || '')).toUpperCase() || name[0].toUpperCase();
+}
+
+function colorForName(name){
+  const palette = ['#1D3557','#2F9E68','#D89A3E','#B4306B','#5C6BC0','#008792'];
+  let hash = 0;
+  for(let i = 0; i < (name || '').length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  return palette[Math.abs(hash) % palette.length];
+}
+
+function escapeHtml(str){
+  return String(str ?? '').replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function parseDateFlexible(str){
+  let m = str.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if(m) return str;
+  m = str.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+  if(m) return `${m[3]}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}`;
+  return null;
+}
+
+function parseTTL(ttl){
+  if(!ttl) return { place: '', date: '' };
+  const idx = ttl.indexOf(',');
+  if(idx === -1) return { place: ttl.trim(), date: '' };
+  const place = ttl.slice(0, idx).trim();
+  const rest = ttl.slice(idx + 1).trim();
+  const date = parseDateFlexible(rest);
+  return date ? { place, date } : { place: ttl.trim(), date: '' };
+}
+
+function formatTTL(place, dateVal){
+  if(!dateVal) return place;
+  const [y, m, d] = dateVal.split('-');
+  return `${place}, ${d}-${m}-${y}`;
+}
+
+function formatTTLDisplay(ttl){
+  const { place, date } = parseTTL(ttl);
+  if(!date) return escapeHtml(ttl || '-');
+  const [y, m, d] = date.split('-');
+  return escapeHtml(`${place}, ${d}-${m}-${y}`);
+}
+
+function showToast(message, type = 'success'){
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  const icon = type === 'success'
+    ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>'
+    : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 9v4m0 4h.01M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg>';
+  toast.innerHTML = `${icon}<span>${escapeHtml(message)}</span>`;
+  el('toastStack').appendChild(toast);
+  setTimeout(() => {
+    toast.style.transition = 'opacity .2s ease';
+    toast.style.opacity = '0';
+    setTimeout(() => toast.remove(), 200);
+  }, 3200);
+}
+
+// ------------------------------------------------------------------
+// Data loading
+// ------------------------------------------------------------------
+function loadData(){
+  loadError = false;
+  fetch('data_json.php')
+    .then((res) => {
+      if(!res.ok) throw new Error('Network response was not ok');
+      return res.json();
+    })
+    .then((data) => {
+      allData = Array.isArray(data) ? data : [];
+      currentPage = 1;
+      render();
+    })
+    .catch((error) => {
+      loadError = true;
+      render();
+      console.error(error);
+    });
+}
+
+// ------------------------------------------------------------------
+// Filtering / sorting / pagination
+// ------------------------------------------------------------------
+function getViewRows(){
+  let rows = allData.slice();
+
+  if(searchTerm){
+    const q = searchTerm.toLowerCase();
+    rows = rows.filter((item) =>
+      String(item.name || '').toLowerCase().includes(q) ||
+      String(item.nisn || '').toLowerCase().includes(q) ||
+      String(item.email || '').toLowerCase().includes(q)
+    );
+  }
+
+  if(genderFilter){
+    rows = rows.filter((item) => normalizeGender(item.gender) === genderFilter);
+  }
+
+  if(sortKey){
+    rows.sort((a, b) => {
+      const av = String(a[sortKey] || '').toLowerCase();
+      const bv = String(b[sortKey] || '').toLowerCase();
+      if(av < bv) return -1 * sortDir;
+      if(av > bv) return 1 * sortDir;
+      return 0;
+    });
+  }
+
+  return rows;
+}
+
+// ------------------------------------------------------------------
+// Render
+// ------------------------------------------------------------------
+function renderStats(){
+  const total = allData.length;
+  const male = allData.filter((i) => normalizeGender(i.gender) === 'Laki-laki').length;
+  const female = allData.filter((i) => normalizeGender(i.gender) === 'Perempuan').length;
+
+  el('stats').innerHTML = `
+    <div class="stat-chip"><span class="num">${total}</span><span class="label">Total data</span></div>
+    <div class="stat-chip"><span class="num">${male}</span><span class="label">Laki-laki</span></div>
+    <div class="stat-chip"><span class="num">${female}</span><span class="label">Perempuan</span></div>
+  `;
+}
+
+function renderSortIndicators(){
+  document.querySelectorAll('th.sortable').forEach((th) => {
+    th.classList.toggle('active', th.dataset.sort === sortKey);
+    th.classList.toggle('desc', th.dataset.sort === sortKey && sortDir === -1);
+  });
+}
+
+function render(){
+  renderStats();
+  renderSortIndicators();
+
+  const tbody = el('hasil');
+  const footer = el('tableFooter');
+
+  if(loadError){
+    tbody.innerHTML = `
+      <tr><td colspan="8">
+        <div class="error-state">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+          <div class="title">Gagal mengambil data</div>
+          <div>Periksa koneksi atau server, lalu coba lagi.</div>
+          <button class="btn btn-ghost" style="margin-top:14px" onclick="loadData()">Coba Lagi</button>
+        </div>
+      </td></tr>`;
+    footer.style.display = 'none';
+    return;
+  }
+
+  const rows = getViewRows();
+
+  if(allData.length === 0 || rows.length === 0){
+    tbody.innerHTML = `
+      <tr><td colspan="8">
+        <div class="empty-state">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+          <div class="title">${allData.length === 0 ? 'Belum ada data' : 'Tidak ditemukan'}</div>
+          <div>${allData.length === 0 ? 'Klik "Tambah Data" untuk menambahkan pengguna pertama.' : 'Coba ubah kata kunci pencarian atau filter.'}</div>
+        </div>
+      </td></tr>`;
+    footer.style.display = 'none';
+    return;
+  }
+
+  const totalPages = Math.max(1, Math.ceil(rows.length / PAGE_SIZE));
+  currentPage = Math.min(currentPage, totalPages);
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const pageRows = rows.slice(start, start + PAGE_SIZE);
+
+  tbody.innerHTML = pageRows.map((item, i) => {
+    const genderNorm = normalizeGender(item.gender);
+    const badgeClass = genderNorm === 'Laki-laki' ? 'badge-m' : genderNorm === 'Perempuan' ? 'badge-f' : 'badge-other';
+    return `
+      <tr>
+        <td data-label="#">${start + i + 1}</td>
+        <td data-label="Nama" class="cell-user-td">
+          <div class="cell-user">
+            <div class="avatar" style="background:${colorForName(item.name)}">${initials(item.name)}</div>
+            <div class="name-block">
+              <div class="name">${escapeHtml(item.name)}</div>
+              <div class="nisn">NISN ${escapeHtml(item.nisn || '-')}</div>
+            </div>
+          </div>
+        </td>
+        <td data-label="NISN">${escapeHtml(item.nisn || '-')}</td>
+        <td data-label="TTL">${formatTTLDisplay(item.ttl)}</td>
+        <td data-label="Gender"><span class="badge ${badgeClass}">${escapeHtml(genderNorm || item.gender || '-')}</span></td>
+        <td data-label="Email">${escapeHtml(item.email || '-')}</td>
+        <td data-label="Alamat"><span class="addr-cell" title="${escapeHtml(item.address || '')}">${escapeHtml(item.address || '-')}</span></td>
+        <td data-label="Aksi">
+          <div class="actions-cell">
+            <button class="btn-icon" data-action="edit" data-id="${item.id}" aria-label="Edit ${escapeHtml(item.name)}">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            </button>
+            <button class="btn-icon danger" data-action="delete" data-id="${item.id}" aria-label="Hapus ${escapeHtml(item.name)}">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0l-1 14a2 2 0 01-2 2H7a2 2 0 01-2-2L4 6h16z"/></svg>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+
+  footer.style.display = 'flex';
+  el('footerInfo').textContent = `Menampilkan ${start + 1}-${Math.min(start + PAGE_SIZE, rows.length)} dari ${rows.length} data`;
+
+  let pagHtml = `<button class="page-btn" ${currentPage === 1 ? 'disabled' : ''} data-page="${currentPage - 1}">&lsaquo;</button>`;
+  for(let p = 1; p <= totalPages; p++){
+    pagHtml += `<button class="page-btn ${p === currentPage ? 'active' : ''}" data-page="${p}">${p}</button>`;
+  }
+  pagHtml += `<button class="page-btn" ${currentPage === totalPages ? 'disabled' : ''} data-page="${currentPage + 1}">&rsaquo;</button>`;
+  el('pagination').innerHTML = pagHtml;
+}
+
+// ------------------------------------------------------------------
+// Modal: add / edit
+// ------------------------------------------------------------------
+function openForm(mode, item){
+  editingId = mode === 'edit' ? item.id : null;
+  el('formTitle').textContent = mode === 'edit' ? 'Ubah Data' : 'Tambah Data';
+  el('submitFormBtn').textContent = mode === 'edit' ? 'Simpan Perubahan' : 'Simpan';
+  el('dataForm').reset();
+  el('hint_nisn').textContent = '';
+
+  if(mode === 'edit'){
+    const { place, date } = parseTTL(item.ttl);
+    el('f_name').value = item.name || '';
+    el('f_nisn').value = item.nisn || '';
+    el('f_email').value = item.email || '';
+    el('f_place').value = place;
+    el('f_date').value = date;
+    el('f_address').value = item.address || '';
+    const genderNorm = normalizeGender(item.gender);
+    const radio = document.querySelector(`input[name="gender"][value="${genderNorm}"]`);
+    if(radio) radio.checked = true;
+  }
+
+  el('formOverlay').classList.add('show');
+  setTimeout(() => el('f_name').focus(), 50);
+}
+
+function closeForm(){
+  el('formOverlay').classList.remove('show');
+  editingId = null;
+}
+
+function submitForm(e){
+  e.preventDefault();
+
+  const name = el('f_name').value.trim();
+  const nisn = el('f_nisn').value.trim();
+  const email = el('f_email').value.trim();
+  const place = el('f_place').value.trim();
+  const date = el('f_date').value;
+  const address = el('f_address').value.trim();
+  const genderInput = document.querySelector('input[name="gender"]:checked');
+
+  if(!/^\d{1,10}$/.test(nisn)){
+    el('hint_nisn').textContent = 'NISN harus berupa angka (maks. 10 digit).';
+    el('f_nisn').focus();
+    return;
+  }
+  el('hint_nisn').textContent = '';
+
+  if(!genderInput){
+    showToast('Pilih gender terlebih dahulu.', 'error');
+    return;
+  }
+
+  const formData = new FormData();
+  if(editingId !== null) formData.append('id', editingId);
+  formData.append('name', name);
+  formData.append('nisn', nisn);
+  formData.append('ttl', formatTTL(place, date));
+  formData.append('gender', genderInput.value);
+  formData.append('email', email);
+  formData.append('address', address);
+
+  const endpoint = editingId !== null ? 'edit.php' : 'tambah.php';
+  const submitBtn = el('submitFormBtn');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Menyimpan...';
+
+  fetch(endpoint, { method: 'POST', body: formData })
+    .then((res) => res.text())
+    .then((result) => {
+      showToast(result || 'Data berhasil disimpan.', 'success');
+      closeForm();
+      loadData();
+    })
+    .catch((error) => {
+      showToast('Gagal menyimpan data.', 'error');
+      console.error(error);
+    })
+    .finally(() => {
+      submitBtn.disabled = false;
+      submitBtn.textContent = editingId !== null ? 'Simpan Perubahan' : 'Simpan';
+    });
+}
+
+// ------------------------------------------------------------------
+// Delete confirm
+// ------------------------------------------------------------------
+function openDeleteConfirm(item){
+  deletingId = item.id;
+  el('confirmText').textContent = `Data "${item.name}" akan dihapus secara permanen.`;
+  el('confirmOverlay').classList.add('show');
+}
+
+function closeDeleteConfirm(){
+  el('confirmOverlay').classList.remove('show');
+  deletingId = null;
+}
+
+function confirmDelete(){
+  if(deletingId === null) return;
+  const btn = el('confirmDeleteBtn');
+  btn.disabled = true;
+  btn.textContent = 'Menghapus...';
+
+  fetch('hapus.php?id=' + encodeURIComponent(deletingId))
+    .then((res) => res.text())
+    .then((result) => {
+      showToast(result || 'Data berhasil dihapus.', 'success');
+      closeDeleteConfirm();
+      loadData();
+    })
+    .catch((error) => {
+      showToast('Gagal menghapus data.', 'error');
+      console.error(error);
+    })
+    .finally(() => {
+      btn.disabled = false;
+      btn.textContent = 'Ya, Hapus';
+    });
+}
+
+// ------------------------------------------------------------------
+// CSV export (client-side, uses currently filtered view)
+// ------------------------------------------------------------------
+function exportCSV(){
+  const rows = getViewRows();
+  if(rows.length === 0){ showToast('Tidak ada data untuk diekspor.', 'error'); return; }
+
+  const header = ['ID','Nama','NISN','TTL','Gender','Email','Alamat'];
+  const csvRows = [header.join(',')];
+  rows.forEach((item) => {
+    const line = [item.id, item.name, item.nisn, item.ttl, item.gender, item.email, item.address]
+      .map((v) => `"${String(v ?? '').replace(/"/g, '""')}"`)
+      .join(',');
+    csvRows.push(line);
+  });
+
+  const blob = new Blob([csvRows.join('\n')], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'data_users.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ------------------------------------------------------------------
+// Events
+// ------------------------------------------------------------------
+el('addBtn').addEventListener('click', () => openForm('add'));
+el('exportBtn').addEventListener('click', exportCSV);
+el('closeFormBtn').addEventListener('click', closeForm);
+el('cancelFormBtn').addEventListener('click', closeForm);
+el('dataForm').addEventListener('submit', submitForm);
+el('cancelDeleteBtn').addEventListener('click', closeDeleteConfirm);
+el('confirmDeleteBtn').addEventListener('click', confirmDelete);
+
+el('formOverlay').addEventListener('click', (e) => { if(e.target === el('formOverlay')) closeForm(); });
+el('confirmOverlay').addEventListener('click', (e) => { if(e.target === el('confirmOverlay')) closeDeleteConfirm(); });
+
+document.addEventListener('keydown', (e) => {
+  if(e.key === 'Escape'){ closeForm(); closeDeleteConfirm(); }
+});
+
+el('hasil').addEventListener('click', (e) => {
+  const btn = e.target.closest('button[data-action]');
+  if(!btn) return;
+  const id = btn.dataset.id;
+  const item = allData.find((i) => String(i.id) === String(id));
+  if(!item) return;
+  if(btn.dataset.action === 'edit') openForm('edit', item);
+  if(btn.dataset.action === 'delete') openDeleteConfirm(item);
+});
+
+el('pagination').addEventListener('click', (e) => {
+  const btn = e.target.closest('button[data-page]');
+  if(!btn || btn.disabled) return;
+  currentPage = Number(btn.dataset.page);
+  render();
+});
+
+document.querySelectorAll('th.sortable').forEach((th) => {
+  th.addEventListener('click', () => {
+    const key = th.dataset.sort;
+    if(sortKey === key){ sortDir *= -1; }
+    else { sortKey = key; sortDir = 1; }
+    currentPage = 1;
+    render();
+  });
+});
+
+let searchDebounce;
+el('searchInput').addEventListener('input', (e) => {
+  clearTimeout(searchDebounce);
+  searchDebounce = setTimeout(() => {
+    searchTerm = e.target.value.trim();
+    currentPage = 1;
+    render();
+  }, 200);
+});
+
+el('genderFilter').addEventListener('change', (e) => {
+  genderFilter = e.target.value;
+  currentPage = 1;
+  render();
+});
+
+el('f_nisn').addEventListener('input', (e) => {
+  e.target.value = e.target.value.replace(/\D/g, '').slice(0, 10);
+});
+
+// ------------------------------------------------------------------
+// Init
+// ------------------------------------------------------------------
+loadData();
+</script>
+
+</body>
+</html>
